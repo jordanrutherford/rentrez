@@ -1,0 +1,85 @@
+---
+title: "Analysis"
+author: "Jordan Rutherford"
+date: "12/02/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyr)
+library(BiocManager)
+```
+
+Import sequences.csv file:
+
+```{r}
+Sequences <- read.csv("Sequences.csv")
+```
+
+
+Find the numbers of each base (A, C, T, G) in each of the three sequences. Print out the number of each nucleotide as a table for each of the three sequences.
+
+```{r}
+seqCount <- data.frame(Sequence = c(">HQ433694.1", ">HQ433691.1", ">HQ433692.1"), #create column for sequence names 
+                       A = str_count(Sequences$Sequence, "A"), #find occurrences of A
+                       T = str_count(Sequences$Sequence, "T"), #find occurrences of T
+                       C = str_count(Sequences$Sequence, "C"), #find occurrences of C
+                       G = str_count(Sequences$Sequence, "G")) #find occurrences of G
+
+print(seqCount) #print table of counts of bases for each sequence
+```
+
+Print out each sequence:
+
+```{r}
+print(Sequences$Sequence)
+```
+
+Include an image of a bacteria from the internet, and a link to the Wikipedia page about *Borrelia burgdorferi*.  
+
+```{r, echo = FALSE}
+url <- "https://res.cloudinary.com/broadcastmed/image/fetch/q_auto,c_fit,w_1300,h_1300,f_auto/http%3A%2F%2F55933-bcmed.s3.amazonaws.com%2Fbcp%2Fimages%2FdmImage%2FSourceImage%2Frheumatology_oct_eblast2.jpg"
+```
+
+<center><img src="`r url`"></center>  
+
+
+[Wikipedia article on *Borrelia burgdorferi*](https://en.wikipedia.org/wiki/Borrelia_burgdorferi#:~:text=Borrelia%20burgdorferi%20is%20a%20bacterial,known%20to%20cause%20the%20disease)  
+
+
+Calculate GC% content.
+
+```{r}
+seqCount<- seqCount %>% #manipulate data as same object
+  group_by(Sequence) %>% #manipulate according to sequence
+  mutate(gc_content = (G+C)/(A+T+G+C)) #divide total number of G+C by all bases to obtain %GC
+
+seqCount$gc_content #see GC% content for each 
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
